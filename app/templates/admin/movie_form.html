@@ -4,13 +4,6 @@
 <section class="auth-card">
   <h1>{{ 'Modifier' if movie else 'Ajouter' }} un programme</h1>
   <form method="post">
-    <div class="form-toggle">
-      <label class="checkbox">
-        <input type="checkbox" name="is_series" value="1" {% if movie and movie.is_series %}checked{% endif %} />
-        Ce programme est une série avec épisodes
-      </label>
-      <p class="form-help">Cochez pour gérer une saison complète depuis le panneau épisode.</p>
-    </div>
     <div class="grid-two">
       <label>Titre
         <input type="text" name="title" value="{{ movie.title if movie else '' }}" required />
@@ -57,9 +50,8 @@
       <input type="url" name="trailer_url" value="{{ movie.trailer_url if movie else '' }}" />
     </label>
     <label>Vidéo principale (URL)
-      <input type="url" name="video_url" value="{{ movie.video_url if movie else '' }}" placeholder="URL de la vidéo ou laisser vide pour une série" />
+      <input type="url" name="video_url" value="{{ movie.video_url if movie else '' }}" required />
     </label>
-    <p class="form-help">Pour une série, ajoutez les vidéos au niveau des épisodes.</p>
     <button class="btn" type="submit">Enregistrer</button>
   </form>
 </section>

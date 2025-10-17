@@ -13,8 +13,8 @@
     <h1>{{ movie.title }}</h1>
     <p class="detail-synopsis">{{ movie.synopsis }}</p>
     <div class="hero-actions">
-      {% if primary_video %}
-      <a class="btn" href="{{ primary_video }}" target="_blank">▶ Regarder maintenant</a>
+      {% if movie.video_url %}
+      <a class="btn" href="{{ movie.video_url }}" target="_blank">▶ Regarder maintenant</a>
       {% endif %}
       {% if movie.trailer_url %}
       <a class="btn ghost" href="{{ movie.trailer_url }}" target="_blank">Voir la bande-annonce</a>
@@ -41,14 +41,8 @@
         <dd>{{ movie.year }}</dd>
       </div>
       <div>
-        <dt>{{ 'Saisons' if movie.is_series else 'Durée' }}</dt>
-        <dd>
-          {% if movie.is_series %}
-            {{ episodes_by_season|length }} saison{{ 's' if episodes_by_season|length > 1 else '' }}
-          {% else %}
-            {{ movie.runtime }}
-          {% endif %}
-        </dd>
+        <dt>Durée</dt>
+        <dd>{{ movie.runtime }}</dd>
       </div>
       <div>
         <dt>Genres</dt>
@@ -57,37 +51,6 @@
     </dl>
   </div>
 </section>
-
-{% if movie.is_series and episodes_by_season %}
-<section class="episodes">
-  <div class="episodes-header">
-    <h2>Épisodes</h2>
-    <p>Sélectionnez un épisode pour lancer la vidéo dans un nouvel onglet.</p>
-  </div>
-  {% for season, episodes in episodes_by_season.items() %}
-  <div class="season">
-    <h3>Saison {{ season }}</h3>
-    <div class="episode-list">
-      {% for episode in episodes %}
-      <article class="episode-card">
-        <div class="episode-number">{{ '%02d'|format(episode.episode_number) }}</div>
-        <div class="episode-body">
-          <div class="episode-title">
-            <h4>{{ episode.title }}</h4>
-            <span class="episode-runtime">{{ episode.runtime or 'Durée inconnue' }}</span>
-          </div>
-          {% if episode.synopsis %}
-          <p>{{ episode.synopsis }}</p>
-          {% endif %}
-        </div>
-        <a class="btn ghost" href="{{ episode.video_url }}" target="_blank">▶ Lire</a>
-      </article>
-      {% endfor %}
-    </div>
-  </div>
-  {% endfor %}
-</section>
-{% endif %}
 
 {% if related %}
 <section class="carousel">

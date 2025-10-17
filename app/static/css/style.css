@@ -344,82 +344,6 @@ a {
   padding: 2rem 3vw;
 }
 
-.episodes {
-  padding: 2rem 3vw 3rem;
-  display: grid;
-  gap: 2rem;
-}
-
-.episodes-header {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.episodes-header p {
-  color: var(--text-muted);
-}
-
-.season {
-  display: grid;
-  gap: 1rem;
-}
-
-.episode-list {
-  display: grid;
-  gap: 1rem;
-}
-
-.episode-card {
-  display: flex;
-  gap: 1.5rem;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 1rem;
-  padding: 1rem 1.5rem;
-  flex-wrap: wrap;
-}
-
-.episode-number {
-  width: 3rem;
-  height: 3rem;
-  border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.12);
-  display: grid;
-  place-items: center;
-  font-weight: 700;
-  font-size: 1.1rem;
-}
-
-.episode-body {
-  flex: 1;
-  display: grid;
-  gap: 0.5rem;
-  min-width: 200px;
-}
-
-.episode-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 1rem;
-}
-
-.episode-title h4 {
-  margin: 0;
-}
-
-.episode-runtime {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-}
-
-.episode-card p {
-  margin: 0;
-  color: var(--text-muted);
-}
-
 .detail-poster {
   border-radius: 1.5rem;
   background-size: cover;
@@ -487,34 +411,6 @@ a {
   color: var(--text-muted);
 }
 
-.auth-card .checkbox {
-  display: flex;
-  gap: 0.75rem;
-  align-items: center;
-  font-size: 0.95rem;
-  color: var(--text);
-}
-
-.auth-card .checkbox input[type="checkbox"] {
-  width: 1.2rem;
-  height: 1.2rem;
-  accent-color: var(--accent);
-}
-
-.form-toggle {
-  display: grid;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 0.75rem;
-}
-
-.form-help {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  margin-top: -0.25rem;
-}
-
 .auth-card input,
 .auth-card textarea,
 .auth-card select {
@@ -533,12 +429,6 @@ a {
 .grid-two {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-}
-
-.grid-three {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
 }
 
@@ -622,25 +512,6 @@ a {
 
   .grid-two {
     grid-template-columns: 1fr;
-  }
-
-  .grid-three {
-    grid-template-columns: 1fr;
-  }
-
-  .episode-card {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .episode-number {
-    width: 100%;
-    border-radius: 0.75rem;
-  }
-
-  .episode-title {
-    flex-direction: column;
-    align-items: flex-start;
   }
 }
 

@@ -3,7 +3,7 @@
 Application de streaming inspirée par les interfaces Netflix / Xalaflix. Elle inclut :
 
 - une page d'accueil immersive avec carrousels dynamiques ;
-- des fiches détaillées pour chaque programme avec liste d'épisodes pour les séries ;
+- des fiches détaillées pour chaque programme ;
 - un système d'authentification (inscription, connexion, déconnexion) ;
 - un panneau d'administration pour gérer les films et séries ;
 - une base de données SQLite initialisée avec du contenu de démonstration.
@@ -39,7 +39,6 @@ Un compte administrateur par défaut est créé lors du premier démarrage :
 Depuis le panneau d'administration, vous pouvez :
 
 - créer, modifier et supprimer des programmes ;
-- déclarer qu'un programme est une série puis gérer ses épisodes (saisons, numéros, vidéos) ;
 - ajouter des liens vers vos propres vidéos (hébergées ailleurs) ;
 - enrichir les métadonnées (catégories, notes, slogans, etc.).
 

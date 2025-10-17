@@ -39,22 +39,7 @@ def movie_detail(movie_id: int):
     if not movie:
         abort(404)
     related = Movie.query.filter(Movie.id != movie.id).limit(6).all()
-    episodes_by_season: dict[int, list] = {}
-    if movie.is_series:
-        season_map = defaultdict(list)
-        for episode in movie.episodes:
-            season_map[episode.season_number].append(episode)
-        episodes_by_season = dict(sorted(season_map.items()))
-        for episodes in episodes_by_season.values():
-            episodes.sort(key=lambda ep: ep.episode_number)
-
-    return render_template(
-        "movie_detail.html",
-        movie=movie,
-        related=related,
-        primary_video=movie.primary_video_url,
-        episodes_by_season=episodes_by_season,
-    )
+    return render_template("movie_detail.html", movie=movie, related=related)
 
 
 @main_bp.route("/search")
