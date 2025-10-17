@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Administration — StreamBox{% endblock %}
+{% block content %}
+<section class="admin-header">
+  <div>
+    <h1>Panneau d'administration</h1>
+    <p>Gérez facilement vos films et séries.</p>
+  </div>
+  <a class="btn" href="{{ url_for('admin.create_movie') }}">+ Ajouter un programme</a>
+</section>
+
+<section class="admin-table">
+  <table>
+    <thead>
+      <tr>
+        <th>Titre</th>
+        <th>Année</th>
+        <th>Catégories</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for movie in movies %}
+      <tr>
+        <td>{{ movie.title }}</td>
+        <td>{{ movie.year }}</td>
+        <td>{{ movie.categories }}</td>
+        <td class="actions">
+          <a class="btn ghost" href="{{ url_for('admin.edit_movie', movie_id=movie.id) }}">Modifier</a>
+          <form method="post" action="{{ url_for('admin.delete_movie', movie_id=movie.id) }}" onsubmit="return confirm('Supprimer ce programme ?');">
+            <button class="btn danger" type="submit">Supprimer</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

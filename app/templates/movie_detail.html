@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}{{ movie.title }} — StreamBox{% endblock %}
+{% block content %}
+<section class="detail-hero" style="background-image:url('{{ movie.background_url }}')">
+  <div class="detail-overlay"></div>
+  <div class="detail-content">
+    <div class="detail-meta">
+      <span class="badge">{{ movie.maturity_badge or 'Tout public' }}</span>
+      <span>{{ movie.year }}</span>
+      <span>{{ movie.runtime }}</span>
+      {% if movie.rating %}<span>Note: {{ movie.rating }}</span>{% endif %}
+    </div>
+    <h1>{{ movie.title }}</h1>
+    <p class="detail-synopsis">{{ movie.synopsis }}</p>
+    <div class="hero-actions">
+      {% if movie.video_url %}
+      <a class="btn" href="{{ movie.video_url }}" target="_blank">▶ Regarder maintenant</a>
+      {% endif %}
+      {% if movie.trailer_url %}
+      <a class="btn ghost" href="{{ movie.trailer_url }}" target="_blank">Voir la bande-annonce</a>
+      {% endif %}
+    </div>
+    {% if movie.categories %}
+    <div class="detail-tags">
+      {% for tag in movie.category_list() %}
+      <span>{{ tag }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<section class="detail-grid">
+  <div class="detail-poster" style="background-image:url('{{ movie.hero_url or movie.thumbnail_url }}')"></div>
+  <div class="detail-info">
+    <h2>À propos</h2>
+    <p>{{ movie.synopsis }}</p>
+    <dl>
+      <div>
+        <dt>Année</dt>
+        <dd>{{ movie.year }}</dd>
+      </div>
+      <div>
+        <dt>Durée</dt>
+        <dd>{{ movie.runtime }}</dd>
+      </div>
+      <div>
+        <dt>Genres</dt>
+        <dd>{{ movie.categories }}</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+{% if related %}
+<section class="carousel">
+  <h2>Vous pourriez aussi aimer</h2>
+  <div class="card-row">
+    {% for item in related %}
+    <a class="card" href="{{ url_for('main.movie_detail', movie_id=item.id) }}">
+      <div class="card-img" style="background-image:url('{{ item.thumbnail_url }}')"></div>
+      <div class="card-info">
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.year }} • {{ item.rating }}</p>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}
