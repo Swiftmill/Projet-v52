@@ -9,16 +9,6 @@
   <a class="btn" href="{{ url_for('admin.create_episode', movie_id=movie.id) }}">+ Nouvel épisode</a>
 </section>
 
-{% if request.args.get('setup') %}
-<section class="notice success">
-  <h2>Étape 3 — Complétez votre série</h2>
-  <p>
-    Votre série est créée ! Ajoutez chaque épisode ci-dessous avec son numéro,
-    sa description et son URL vidéo pour finaliser la mise en ligne.
-  </p>
-</section>
-{% endif %}
-
 <section class="admin-table">
   {% if episodes %}
   <table>

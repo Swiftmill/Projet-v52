@@ -1,142 +1,58 @@
 {% extends "base.html" %}
 {% block title %}{{ 'Modifier' if movie else 'Ajouter' }} un programme — StreamBox{% endblock %}
 {% block content %}
-<section class="admin-form-card">
+<section class="auth-card">
   <h1>{{ 'Modifier' if movie else 'Ajouter' }} un programme</h1>
-  <form
-    method="post"
-    class="step-form"
-    data-step-form
-    data-initial-step="{{ 'details' if movie else 'type' }}"
-    data-current-step="{{ 'details' if movie else 'type' }}"
-  >
-    <div class="step-flow" data-stepper>
-      <div class="step-node" data-step-indicator="type">
-        <span class="step-index">1</span>
-        <span>Type</span>
-      </div>
-      <div class="step-node" data-step-indicator="details">
-        <span class="step-index">2</span>
-        <span>Informations</span>
-      </div>
-      <div class="step-node" data-step-indicator="episodes">
-        <span class="step-index">3</span>
-        <span>Épisodes</span>
-      </div>
+  <form method="post">
+    <div class="grid-two">
+      <label>Titre
+        <input type="text" name="title" value="{{ movie.title if movie else '' }}" required />
+      </label>
+      <label>Année
+        <input type="number" name="year" value="{{ movie.year if movie else '' }}" required />
+      </label>
     </div>
-
-    <div class="form-step" data-step="type">
-      <h2>Étape 1 — Choisissez le format</h2>
-      <div class="option-grid">
-        <label class="option-card">
-          <input
-            type="radio"
-            name="is_series"
-            value="0"
-            {% if movie and not movie.is_series %}checked{% endif %}
-          />
-          <span class="option-title">Film</span>
-          <span class="option-copy">Un long métrage avec une seule vidéo.</span>
-        </label>
-        <label class="option-card">
-          <input
-            type="radio"
-            name="is_series"
-            value="1"
-            {% if movie and movie.is_series %}checked{% endif %}
-          />
-          <span class="option-title">Série</span>
-          <span class="option-copy">Plusieurs épisodes répartis par saisons.</span>
-        </label>
-      </div>
-      <p class="form-help">
-        Vous pourrez ajouter les épisodes après avoir enregistré votre série.
-      </p>
-      <div class="form-actions">
-        <button class="btn" type="button" data-next-step disabled>Continuer</button>
-      </div>
+    <div class="grid-two">
+      <label>Note
+        <input type="text" name="rating" value="{{ movie.rating if movie else '' }}" />
+      </label>
+      <label>Catégorie d'âge
+        <input type="text" name="maturity_badge" value="{{ movie.maturity_badge if movie else '' }}" />
+      </label>
     </div>
-
-    <div class="form-step" data-step="details">
-      <h2>Étape 2 — Complétez les informations</h2>
-      <div class="grid-two">
-        <label>Titre
-          <input type="text" name="title" value="{{ movie.title if movie else '' }}" required />
-        </label>
-        <label>Année
-          <input type="number" name="year" value="{{ movie.year if movie else '' }}" required />
-        </label>
-      </div>
-      <div class="grid-two">
-        <label>Note
-          <input type="text" name="rating" value="{{ movie.rating if movie else '' }}" />
-        </label>
-        <label>Catégorie d'âge
-          <input type="text" name="maturity_badge" value="{{ movie.maturity_badge if movie else '' }}" />
-        </label>
-      </div>
-      <div class="grid-two">
-        <label>Durée
-          <input type="text" name="runtime" value="{{ movie.runtime if movie else '' }}" />
-        </label>
-        <label>Genres (séparés par des virgules)
-          <input type="text" name="categories" value="{{ movie.categories if movie else '' }}" />
-        </label>
-      </div>
-      <label>Sous-titre héro
-        <input type="text" name="spotlight_title" value="{{ movie.spotlight_title if movie else '' }}" />
+    <div class="grid-two">
+      <label>Durée
+        <input type="text" name="runtime" value="{{ movie.runtime if movie else '' }}" />
       </label>
-      <label>Tagline héro
-        <input type="text" name="spotlight_tagline" value="{{ movie.spotlight_tagline if movie else '' }}" />
+      <label>Genres (séparés par des virgules)
+        <input type="text" name="categories" value="{{ movie.categories if movie else '' }}" />
       </label>
-      <label>Synopsis
-        <textarea name="synopsis" rows="5" required>{{ movie.synopsis if movie else '' }}</textarea>
-      </label>
-      <label>Image miniature (URL)
-        <input type="url" name="thumbnail_url" value="{{ movie.thumbnail_url if movie else '' }}" />
-      </label>
-      <label>Image héro (URL)
-        <input type="url" name="hero_url" value="{{ movie.hero_url if movie else '' }}" />
-      </label>
-      <label>Arrière-plan (URL)
-        <input type="url" name="background_url" value="{{ movie.background_url if movie else '' }}" />
-      </label>
-      <label>Bande-annonce (URL)
-        <input type="url" name="trailer_url" value="{{ movie.trailer_url if movie else '' }}" />
-      </label>
-      <div class="film-only{% if movie and movie.is_series %} is-hidden{% endif %}" data-film-only>
-        <label>Vidéo principale (URL)
-          <input
-            type="url"
-            name="video_url"
-            value="{{ movie.video_url if movie else '' }}"
-            placeholder="URL de la vidéo principale"
-            {% if not movie or not movie.is_series %}required{% endif %}
-            data-film-required
-          />
-        </label>
-        <p class="form-help">Obligatoire pour les films.</p>
-      </div>
-      <div class="series-hint{% if not movie or not movie.is_series %} is-hidden{% endif %}" data-series-hint>
-        <p>
-          Une fois la série enregistrée, vous serez redirigé vers l'étape
-          <strong>Épisodes</strong> pour ajouter chaque épisode et ses vidéos.
-        </p>
-      </div>
-      {% if movie and movie.is_series %}
-      <div class="series-shortcut">
-        <a class="btn ghost" href="{{ url_for('admin.list_episodes', movie_id=movie.id) }}">
-          Gérer les épisodes existants
-        </a>
-      </div>
-      {% endif %}
-      <div class="form-actions">
-        <button class="btn ghost" type="button" data-prev-step>Retour</button>
-        <button class="btn" type="submit">
-          {{ 'Mettre à jour le programme' if movie else 'Enregistrer le programme' }}
-        </button>
-      </div>
     </div>
+    <label>Sous-titre héro
+      <input type="text" name="spotlight_title" value="{{ movie.spotlight_title if movie else '' }}" />
+    </label>
+    <label>Tagline héro
+      <input type="text" name="spotlight_tagline" value="{{ movie.spotlight_tagline if movie else '' }}" />
+    </label>
+    <label>Synopsis
+      <textarea name="synopsis" rows="5" required>{{ movie.synopsis if movie else '' }}</textarea>
+    </label>
+    <label>Image miniature (URL)
+      <input type="url" name="thumbnail_url" value="{{ movie.thumbnail_url if movie else '' }}" />
+    </label>
+    <label>Image héro (URL)
+      <input type="url" name="hero_url" value="{{ movie.hero_url if movie else '' }}" />
+    </label>
+    <label>Arrière-plan (URL)
+      <input type="url" name="background_url" value="{{ movie.background_url if movie else '' }}" />
+    </label>
+    <label>Bande-annonce (URL)
+      <input type="url" name="trailer_url" value="{{ movie.trailer_url if movie else '' }}" />
+    </label>
+    <label>Vidéo principale (URL)
+      <input type="url" name="video_url" value="{{ movie.video_url if movie else '' }}" required />
+    </label>
+    <button class="btn" type="submit">Enregistrer</button>
   </form>
 </section>
 {% endblock %}
