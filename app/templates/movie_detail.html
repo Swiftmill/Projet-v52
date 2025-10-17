@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}{{ movie.title }} — StreamBox{% endblock %}
+{% block content %}
+<section class="detail-hero" style="background-image:url('{{ movie.background_url }}')">
+  <div class="detail-overlay"></div>
+  <div class="detail-content">
+    <div class="detail-meta">
+      <span class="badge">{{ movie.maturity_badge or 'Tout public' }}</span>
+      <span>{{ movie.year }}</span>
+      <span>{{ movie.runtime }}</span>
+      {% if movie.rating %}<span>Note: {{ movie.rating }}</span>{% endif %}
+    </div>
+    <h1>{{ movie.title }}</h1>
+    <p class="detail-synopsis">{{ movie.synopsis }}</p>
+    <div class="hero-actions">
+      {% if primary_video %}
+      <a class="btn" href="{{ primary_video }}" target="_blank">▶ Regarder maintenant</a>
+      {% endif %}
+      {% if movie.trailer_url %}
+      <a class="btn ghost" href="{{ movie.trailer_url }}" target="_blank">Voir la bande-annonce</a>
+      {% endif %}
+    </div>
+    {% if movie.categories %}
+    <div class="detail-tags">
+      {% for tag in movie.category_list() %}
+      <span>{{ tag }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<section class="detail-grid">
+  <div class="detail-poster" style="background-image:url('{{ movie.hero_url or movie.thumbnail_url }}')"></div>
+  <div class="detail-info">
+    <h2>À propos</h2>
+    <p>{{ movie.synopsis }}</p>
+    <dl>
+      <div>
+        <dt>Année</dt>
+        <dd>{{ movie.year }}</dd>
+      </div>
+      <div>
+        <dt>{{ 'Saisons' if movie.is_series else 'Durée' }}</dt>
+        <dd>
+          {% if movie.is_series %}
+            {{ episodes_by_season|length }} saison{{ 's' if episodes_by_season|length > 1 else '' }}
+          {% else %}
+            {{ movie.runtime }}
+          {% endif %}
+        </dd>
+      </div>
+      <div>
+        <dt>Genres</dt>
+        <dd>{{ movie.categories }}</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+{% if movie.is_series and episodes_by_season %}
+<section class="episodes">
+  <div class="episodes-header">
+    <h2>Épisodes</h2>
+    <p>Sélectionnez un épisode pour lancer la vidéo dans un nouvel onglet.</p>
+  </div>
+  {% for season, episodes in episodes_by_season.items() %}
+  <div class="season">
+    <h3>Saison {{ season }}</h3>
+    <div class="episode-list">
+      {% for episode in episodes %}
+      <article class="episode-card">
+        <div class="episode-number">{{ '%02d'|format(episode.episode_number) }}</div>
+        <div class="episode-body">
+          <div class="episode-title">
+            <h4>{{ episode.title }}</h4>
+            <span class="episode-runtime">{{ episode.runtime or 'Durée inconnue' }}</span>
+          </div>
+          {% if episode.synopsis %}
+          <p>{{ episode.synopsis }}</p>
+          {% endif %}
+        </div>
+        <a class="btn ghost" href="{{ episode.video_url }}" target="_blank">▶ Lire</a>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+</section>
+{% endif %}
+
+{% if related %}
+<section class="carousel">
+  <h2>Vous pourriez aussi aimer</h2>
+  <div class="card-row">
+    {% for item in related %}
+    <a class="card" href="{{ url_for('main.movie_detail', movie_id=item.id) }}">
+      <div class="card-img" style="background-image:url('{{ item.thumbnail_url }}')"></div>
+      <div class="card-info">
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.year }} • {{ item.rating }}</p>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}
