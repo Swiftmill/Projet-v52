@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Recherche — StreamBox{% endblock %}
+{% block content %}
+<section class="search-results">
+  <h1>Résultats pour "{{ query }}"</h1>
+  {% if results %}
+  <div class="card-row">
+    {% for movie in results %}
+    <a class="card" href="{{ url_for('main.movie_detail', movie_id=movie.id) }}">
+      <div class="card-img" style="background-image:url('{{ movie.thumbnail_url }}')"></div>
+      <div class="card-info">
+        <h3>{{ movie.title }}</h3>
+        <p>{{ movie.year }} • {{ movie.rating }}</p>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p>Aucun résultat. Essayez un autre titre ou genre.</p>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Modifier' if movie else 'Ajouter' }} un programme — StreamBox{% endblock %}
+{% block content %}
+<section class="auth-card">
+  <h1>{{ 'Modifier' if movie else 'Ajouter' }} un programme</h1>
+  <form method="post">
+    <div class="form-toggle">
+      <label class="checkbox">
+        <input type="checkbox" name="is_series" value="1" {% if movie and movie.is_series %}checked{% endif %} />
+        Ce programme est une série avec épisodes
+      </label>
+      <p class="form-help">Cochez pour gérer une saison complète depuis le panneau épisode.</p>
+    </div>
+    <div class="grid-two">
+      <label>Titre
+        <input type="text" name="title" value="{{ movie.title if movie else '' }}" required />
+      </label>
+      <label>Année
+        <input type="number" name="year" value="{{ movie.year if movie else '' }}" required />
+      </label>
+    </div>
+    <div class="grid-two">
+      <label>Note
+        <input type="text" name="rating" value="{{ movie.rating if movie else '' }}" />
+      </label>
+      <label>Catégorie d'âge
+        <input type="text" name="maturity_badge" value="{{ movie.maturity_badge if movie else '' }}" />
+      </label>
+    </div>
+    <div class="grid-two">
+      <label>Durée
+        <input type="text" name="runtime" value="{{ movie.runtime if movie else '' }}" />
+      </label>
+      <label>Genres (séparés par des virgules)
+        <input type="text" name="categories" value="{{ movie.categories if movie else '' }}" />
+      </label>
+    </div>
+    <label>Sous-titre héro
+      <input type="text" name="spotlight_title" value="{{ movie.spotlight_title if movie else '' }}" />
+    </label>
+    <label>Tagline héro
+      <input type="text" name="spotlight_tagline" value="{{ movie.spotlight_tagline if movie else '' }}" />
+    </label>
+    <label>Synopsis
+      <textarea name="synopsis" rows="5" required>{{ movie.synopsis if movie else '' }}</textarea>
+    </label>
+    <label>Image miniature (URL)
+      <input type="url" name="thumbnail_url" value="{{ movie.thumbnail_url if movie else '' }}" />
+    </label>
+    <label>Image héro (URL)
+      <input type="url" name="hero_url" value="{{ movie.hero_url if movie else '' }}" />
+    </label>
+    <label>Arrière-plan (URL)
+      <input type="url" name="background_url" value="{{ movie.background_url if movie else '' }}" />
+    </label>
+    <label>Bande-annonce (URL)
+      <input type="url" name="trailer_url" value="{{ movie.trailer_url if movie else '' }}" />
+    </label>
+    <label>Vidéo principale (URL)
+      <input type="url" name="video_url" value="{{ movie.video_url if movie else '' }}" placeholder="URL de la vidéo ou laisser vide pour une série" />
+    </label>
+    <p class="form-help">Pour une série, ajoutez les vidéos au niveau des épisodes.</p>
+    <button class="btn" type="submit">Enregistrer</button>
+  </form>
+</section>
+{% endblock %}

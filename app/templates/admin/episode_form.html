@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Modifier' if episode else 'Ajouter' }} un épisode — {{ movie.title }} — StreamBox{% endblock %}
+{% block content %}
+<section class="auth-card">
+  <h1>{{ 'Modifier' if episode else 'Ajouter' }} un épisode</h1>
+  <p class="form-help">Les épisodes apparaissent automatiquement sur la page de la série.</p>
+  <form method="post">
+    <div class="grid-three">
+      <label>Saison
+        <input type="number" name="season_number" min="1" value="{{ episode.season_number if episode else 1 }}" required />
+      </label>
+      <label>Épisode
+        <input type="number" name="episode_number" min="1" value="{{ episode.episode_number if episode else 1 }}" required />
+      </label>
+      <label>Durée
+        <input type="text" name="runtime" value="{{ episode.runtime if episode else '' }}" />
+      </label>
+    </div>
+    <label>Titre
+      <input type="text" name="title" value="{{ episode.title if episode else '' }}" required />
+    </label>
+    <label>Synopsis
+      <textarea name="synopsis" rows="4">{{ episode.synopsis if episode else '' }}</textarea>
+    </label>
+    <label>Vidéo (URL)
+      <input type="url" name="video_url" value="{{ episode.video_url if episode else '' }}" required />
+    </label>
+    <button class="btn" type="submit">Enregistrer l'épisode</button>
+  </form>
+  <a class="btn ghost" href="{{ url_for('admin.list_episodes', movie_id=movie.id) }}">Annuler</a>
+</section>
+{% endblock %}

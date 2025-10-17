@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}StreamBox — Accueil{% endblock %}
+{% block content %}
+<section class="hero" style="background-image: url('{{ spotlight.background_url if spotlight else '' }}')">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="badge">N Series</div>
+    <h1>{{ spotlight.spotlight_title if spotlight else 'Bienvenue sur StreamBox' }}</h1>
+    <p class="hero-tagline">{{ spotlight.spotlight_tagline if spotlight else 'Retrouvez vos séries et films favoris en streaming illimité.' }}</p>
+    {% if spotlight %}
+    <div class="hero-meta">
+      <span>{{ spotlight.year }}</span>
+      {% if spotlight.maturity_badge %}<span class="badge maturity">{{ spotlight.maturity_badge }}</span>{% endif %}
+      {% if spotlight.runtime %}<span>{{ spotlight.runtime }}</span>{% endif %}
+      {% if spotlight.rating %}<span>{{ spotlight.rating }}</span>{% endif %}
+    </div>
+    <div class="hero-actions">
+      {% if spotlight.video_url %}
+      <a class="btn" href="{{ spotlight.video_url }}" target="_blank">▶ Regarder</a>
+      {% endif %}
+      {% if spotlight.trailer_url %}
+      <a class="btn ghost" href="{{ spotlight.trailer_url }}" target="_blank">Bande-annonce</a>
+      {% endif %}
+      <a class="btn ghost" href="{{ url_for('main.movie_detail', movie_id=spotlight.id) }}">Plus d'infos</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<section class="carousel">
+  <h2>Sorties de la semaine</h2>
+  <div class="card-row">
+    {% for movie in new_releases %}
+    <a class="card" href="{{ url_for('main.movie_detail', movie_id=movie.id) }}">
+      <div class="card-img" style="background-image:url('{{ movie.thumbnail_url }}')"></div>
+      <div class="card-info">
+        <h3>{{ movie.title }}</h3>
+        <p>{{ movie.year }} • {{ movie.rating }}</p>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="carousel">
+  <h2>Tendances</h2>
+  <div class="card-row">
+    {% for movie in trending %}
+    <a class="card" href="{{ url_for('main.movie_detail', movie_id=movie.id) }}">
+      <div class="card-img" style="background-image:url('{{ movie.thumbnail_url }}')"></div>
+      <div class="card-info">
+        <h3>{{ movie.title }}</h3>
+        <p>{{ movie.year }} • {{ movie.rating }}</p>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+{% if category_sections %}
+{% for label, movies in category_sections.items() %}
+<section class="carousel">
+  <h2>{{ label }}</h2>
+  <div class="card-row">
+    {% for movie in movies[:10] %}
+    <a class="card" href="{{ url_for('main.movie_detail', movie_id=movie.id) }}">
+      <div class="card-img" style="background-image:url('{{ movie.thumbnail_url }}')"></div>
+      <div class="card-info">
+        <h3>{{ movie.title }}</h3>
+        <p>{{ movie.year }} • {{ movie.rating }}</p>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endfor %}
+{% endif %}
+{% endblock %}

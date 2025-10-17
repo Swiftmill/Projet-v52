@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Épisodes — {{ movie.title }} — StreamBox{% endblock %}
+{% block content %}
+<section class="admin-header">
+  <div>
+    <h1>Épisodes — {{ movie.title }}</h1>
+    <p>Ajoutez ou modifiez les épisodes de votre série.</p>
+  </div>
+  <a class="btn" href="{{ url_for('admin.create_episode', movie_id=movie.id) }}">+ Nouvel épisode</a>
+</section>
+
+<section class="admin-table">
+  {% if episodes %}
+  <table>
+    <thead>
+      <tr>
+        <th>Saison</th>
+        <th>Épisode</th>
+        <th>Titre</th>
+        <th>Durée</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for episode in episodes %}
+      <tr>
+        <td>{{ episode.season_number }}</td>
+        <td>{{ episode.episode_number }}</td>
+        <td>{{ episode.title }}</td>
+        <td>{{ episode.runtime or '—' }}</td>
+        <td class="actions">
+          <a class="btn ghost" href="{{ url_for('admin.edit_episode', movie_id=movie.id, episode_id=episode.id) }}">Modifier</a>
+          <form method="post" action="{{ url_for('admin.delete_episode', movie_id=movie.id, episode_id=episode.id) }}" onsubmit="return confirm('Supprimer cet épisode ?');">
+            <button class="btn danger" type="submit">Supprimer</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>Aucun épisode pour le moment. Commencez par en créer un !</p>
+  {% endif %}
+</section>
+
+<a class="btn ghost" href="{{ url_for('admin.dashboard') }}">← Retour au panneau</a>
+{% endblock %}
