@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Connexion — StreamBox{% endblock %}
+{% block content %}
+<section class="auth-card">
+  <h1>Connexion</h1>
+  <form method="post">
+    <label>Nom d'utilisateur
+      <input type="text" name="username" required />
+    </label>
+    <label>Mot de passe
+      <input type="password" name="password" required />
+    </label>
+    <button class="btn" type="submit">Se connecter</button>
+  </form>
+  <p class="auth-footer">Pas encore de compte ? <a href="{{ url_for('auth.register') }}">Inscrivez-vous</a>.</p>
+</section>
+{% endblock %}

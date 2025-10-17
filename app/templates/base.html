@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}StreamBox{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="app-header">
+        <div class="logo">Stream<span>Box</span></div>
+        <nav class="main-nav">
+          <a href="{{ url_for('main.home') }}">Accueil</a>
+          <a href="{{ url_for('main.search') }}">Explorer</a>
+          {% if current_user.is_authenticated and current_user.is_admin %}
+          <a href="{{ url_for('admin.dashboard') }}">Admin</a>
+          {% endif %}
+        </nav>
+        <div class="header-actions">
+          <form class="search-form" method="get" action="{{ url_for('main.search') }}">
+            <input type="search" name="q" placeholder="Rechercher un film" value="{{ request.args.get('q', '') }}" />
+          </form>
+          {% if current_user.is_authenticated %}
+          <div class="user-menu">
+            <span class="user-avatar">{{ current_user.username[0]|upper }}</span>
+            <div class="user-dropdown">
+              <span>{{ current_user.username }}</span>
+              <a href="{{ url_for('auth.logout') }}">Déconnexion</a>
+            </div>
+          </div>
+          {% else %}
+          <div class="auth-buttons">
+            <a class="btn ghost" href="{{ url_for('auth.login') }}">Se connecter</a>
+            <a class="btn" href="{{ url_for('auth.register') }}">S'inscrire</a>
+          </div>
+          {% endif %}
+        </div>
+      </header>
+
+      {% with messages = get_flashed_messages(with_categories=True) %}
+      {% if messages %}
+      <div class="toast-container">
+        {% for category, message in messages %}
+        <div class="toast {{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% endwith %}
+
+      <main class="content">
+        {% block content %}{% endblock %}
+      </main>
+
+      <footer class="app-footer">
+        <div>
+          <strong>StreamBox</strong> — votre univers ciné & séries.
+        </div>
+        <small>Admin: admin / admin123</small>
+      </footer>
+    </div>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  </body>
+</html>
